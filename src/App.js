@@ -5,6 +5,7 @@ import {getAllContacts, getMessagesByNumber} from './api'
 import ContactCard from './components/ContactCard'
 import ContactMessages from './components/ContactMessages'
 import MessageSender from './components/MessageSender'
+import NewContact from './components/NewContact'
 
 class App extends Component{
   state = {contactList:[], curContact:null, messages:[]}
@@ -13,13 +14,13 @@ class App extends Component{
       <div className="App">
         <div className="contentWrap">
        <section className='contactSidebar'>
-        <h3>Contacts</h3>
+        <h3 id="contactBarTitle">Contacts</h3>
         <ul className="contactsList">
           {this.state.contactList.map(contact => {
             return (<ContactCard contact={contact} key={contact.contact_number} handleChangeContact={this.handleChangeContact}/>);
           })}          
         </ul>
-        <button className="customBtn">Add New Contact</button>
+        <NewContact handleContact={this.handleSentInfo}/>
        </section>
        <section className="messageMain">
           <section className="messageTitle">
@@ -29,7 +30,7 @@ class App extends Component{
           <section className="messageBlock">
             <ContactMessages messages={this.state.messages} curContact={this.state.curContact}/>
           </section>
-          <MessageSender curContact={this.state.curContact} handleMessage={this.handleMessageSent}/>
+          <MessageSender curContact={this.state.curContact} handleMessage={this.handleSentInfo}/>
        </section>
       </div>
       </div>
@@ -56,8 +57,9 @@ class App extends Component{
       }
     }
 
-    handleMessageSent = () => {
-      this.fetchMessages()
+    handleSentInfo = (contactCheck) => {
+      contactCheck ?this.fetchContacts() :this.fetchMessages()
+      
     }
 
     handleChangeContact = event => {

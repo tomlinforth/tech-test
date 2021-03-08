@@ -23,3 +23,11 @@ export const postNewMessage = (contact_num, body) => {
             return true
         })
 }
+
+export const postNewContact = (contact_num, firstN, lastN) => {
+    return axios
+        .post('https://techtestapiwsl.herokuapp.com/api/contacts/', {contact_number:contact_num, first_name:firstN, last_name:lastN})
+        .then(({data}) => {
+            return data.contact;
+        })
+}

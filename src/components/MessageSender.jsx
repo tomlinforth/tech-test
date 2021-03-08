@@ -22,7 +22,7 @@ class MessageSender extends Component {
         const messageInp = this.state.messageInp;
         postNewMessage(this.props.curContact, messageInp)
             .then(() => {
-                this.props.handleMessage()
+                this.props.handleMessage(false)
                 this.setState({messageInp:''})
             })
     }

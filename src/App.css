@@ -49,7 +49,7 @@
     text-align: center;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 10fr 1fr;
     grid-template-areas: 
     ". . ."
     ". contentWrap ."
@@ -68,12 +68,27 @@
   }
   .contactSidebar {
     grid-area: contactSidebar;
+    display:grid;
+    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-areas: 
+    "contactBarTitle"
+    "contactsList"
+    "contactSend";
+  }
+
+  #contactBarTitle {
+    grid-area:contactBarTitle;
+  }
+
+  .contactsList {
+    grid-area:contactsList;
+    margin-top:-50px;
   }
   
   .messageMain {
     grid-area: messageMain;
     display:grid;
-    grid-template-rows: 1fr 4fr 1fr;
+    grid-template-rows: 1fr 8fr 1fr;
     grid-template-areas: 
     "messageTitle"
     "messageBlock"
@@ -188,6 +203,39 @@
     border-color: grey;
   }
 
+  .contactSend {
+    display:grid;
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: 
+    "contactNum"
+    "firstN"
+    "lastN"
+    "contactBtn";
+    margin-top: -50px;
+    margin-left: 5px;
+  }
+
+  .contactText {
+    border: 1px solid;
+    border-radius: 10px;
+  }
+
+  #contactBtn {
+    grid-area:contactBtn;
+  }
+
+  #contactNum {
+    grid-area: contactNum;
+  }
+
+  #firstN {
+    grid-area: firstN;
+  }
+
+  #lastN {
+    grid-area:lastN;
+  }
   html {
     background-color: cornflowerblue;
   }
