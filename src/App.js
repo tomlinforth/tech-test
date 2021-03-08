@@ -1,25 +1,69 @@
 import logo from './logo.svg';
 import './App.css';
+import React, {Component} from 'react';
+import {getAllContacts, getMessagesByNumber} from './api'
+import ContactCard from './components/ContactCard'
+import ContactMessages from './components/ContactMessages'
+import MessageSender from './components/MessageSender'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component{
+  state = {contactList:[], curContact:null, messages:[]}
+  render(){
+    return (
+      <div className="App">
+        <div className="contentWrap">
+       <section className='contactSidebar'>
+        <h3>Contacts</h3>
+        <ul className="contactsList">
+          {this.state.contactList.map(contact => {
+            return (<ContactCard contact={contact} key={contact.contact_number} handleChangeContact={this.handleChangeContact}/>);
+          })}          
+        </ul>
+        <button className="customBtn">Add New Contact</button>
+       </section>
+       <section className="messageMain">
+          <section className="messageTitle">
+            <h3 className="messageHeader">Messages</h3>
+            {this.state.curContact ? <i>({this.state.curContact})</i> : <p></p>}
+          </section>
+          <section className="messageBlock">
+            <ContactMessages messages={this.state.messages} curContact={this.state.curContact}/>
+          </section>
+          <MessageSender curContact={this.state.curContact} handleMessage={this.handleMessageSent}/>
+       </section>
+      </div>
+      </div>
+    );}
+
+    fetchContacts = () => {
+      getAllContacts().then(contacts => {this.setState({contactList:contacts})})
+    }
+
+    fetchMessages = () => {
+      getMessagesByNumber(this.state.curContact)
+          .then(messageData => {
+            this.setState({messages:messageData})
+          })
+    }
+
+    componentDidMount() {
+      this.fetchContacts()
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+      if (prevState.curContact !== this.state.curContact && this.state.curContact) {
+        this.fetchMessages()
+      }
+    }
+
+    handleMessageSent = () => {
+      this.fetchMessages()
+    }
+
+    handleChangeContact = event => {
+      const { value } = event.target;
+      value === this.state.curContact ? this.fetchMessages() : this.setState({ curContact: value });
+    };
 }
 
 export default App;
